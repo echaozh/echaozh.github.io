@@ -1,0 +1,30 @@
+<!DOCTYPE html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content IE=edge><meta name="viewport" content="width=device-width"><title>LuaPP, a Wrapper for Lua in C++</title><!--  syntax highlighting CSS--><link rel="stylesheet" href="/css/syntax.css"><!--  Custom CSS--><link rel="stylesheet" href="/css/main.css"></head><body><div class="site"><div class="header"><h1 class="title"><a href="/">A Path Less Travelled</a></h1><a href="/" class="extra">home</a><a href="/posts.html" class="extra">posts</a><a href="/about.html" class="extra">about</a><a href="/family.html" class="extra">family</a><a href="/resumes.html" class="extra">resumes</a></div><div class="content"><article><small class="wholeDate"><span class="date">07</span><br/>Oct 2013</small><h2>LuaPP, a Wrapper for Lua in C++</h2><div class="postTags">Tags:&nbsp;<span class="postTag">c++</span>&nbsp;<span class="postTag">lua</span>&nbsp;<span class="postTag">luapp</span>&nbsp;<span class="postTag">library</span></div><div class="post"><p><a href="https://github.com/echaozh/luapp">LuaPP</a> is a library I wrote to ease the embedding of Lua scripts into C++ applications. It&#39;s more C++-ish, and much easier to use.</p>
+<!-- more -->
+
+<p>The library makes Lua tables, functions, and other primitive types directly accessible from the C++ code. Instead of manipulating the stack, you can directly get and set values to a global variable, or access fields of a table, or invoke a function as if it was native. You can pass in arguments of the std::string type, and it will be converted. You can even pass in Lua tables as arguments. Variadic arguments are used in the function interface to make invocations look and feel more native.</p>
+<p>When you embed Lua into your application, you normally want to load external Lua scripts, execute them, and interact with them (say invoke functions defined in the scripts). LuaPP helps you interact with the scripts easily.</p>
+<p>I wrote another library <em>taveren</em> using LuaPP to embed Lua scripts into strings. It makes expansions in string literals like in Bash or Ruby possible.</p>
+</div></article><div id="attoolbox" style="display: inline" class="addthis_toolbox addthis_default_style addthis_16x16_style"><a class="addthis_button_email"></a><a class="addthis_button_print"></a><a class="addthis_button_reddit"></a><a class="addthis_button_hackernews"></a><a class="addthis_button_google_plusone_share"></a><a class="addthis_button_linkedin"></a><a class="addthis_button_sinaweibo"></a><a class="addthis_button_facebook"></a><a class="addthis_button_twitter"></a><a class="addthis_button_expanded"></a><a id="atcounter" class="addthis_counter addthis_bubble_style"></a></div><script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=echaozh"></script><script type="text/javascript">addthis.toolbox("#attoolbox");
+addthis.counter("#atcounter");
+</script><p></p><div id="disqus_thread"></div><script type="text/javascript">/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+ // required: replace example with your forum shortname
+var disqus_shortname = 'echaozh';
+
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] ||
+   document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script><noscript>Please enable JavaScript to view the&nbsp;<a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by&nbsp;<span class="logo-disqusDisqus"></span></a></div><div class="footer"><address class="contact"><p><a href="/about.html">Zhang Yichao</a><br><a href="https://github.com/echaozh">On GitHub</a><br><a href="http://weibo.com/echaozh">On Weibo</a><br><span id="email">By Email: echaozh (at) gmail dot com
+(Please turn on JavaScript.)</span><br><a href="https://www.gittip.com/echaozh/">Tip Me</a><br><a href="/feed.xml">Subscribe to Posts</a><br><a href="https://github.com/echaozh/harp-blog/">Blog Source</a></p></address></div></div><script>document.getElementById('email').innerHTML =
+  ('<n uers="znvygb:rpunbmu@tznvy.pbz" ery="absbyybj" pynff="rznvy">' +
+   'Ol Rznvy</n>').replace (
+    /[a-zA-Z]/g, function (c) {
+      return String.fromCharCode ((c <= "Z" ? 90 : 122) >=
+                                  (c = c.charCodeAt (0) + 13) ? c
+                                  : c - 26);
+    });</script></body>

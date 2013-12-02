@@ -1,0 +1,39 @@
+<!DOCTYPE html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content IE=edge><meta name="viewport" content="width=device-width"><title>Introducing Python dbtxn Library</title><!--  syntax highlighting CSS--><link rel="stylesheet" href="/css/syntax.css"><!--  Custom CSS--><link rel="stylesheet" href="/css/main.css"></head><body><div class="site"><div class="header"><h1 class="title"><a href="/">A Path Less Travelled</a></h1><a href="/" class="extra">home</a><a href="/posts.html" class="extra">posts</a><a href="/about.html" class="extra">about</a><a href="/family.html" class="extra">family</a><a href="/resumes.html" class="extra">resumes</a></div><div class="content"><article><small class="wholeDate"><span class="date">06</span><br/>Oct 2013</small><h2>Introducing Python dbtxn Library</h2><div class="postTags">Tags:&nbsp;<span class="postTag">python</span>&nbsp;<span class="postTag">dbtxn</span>&nbsp;<span class="postTag">library</span></div><div class="post"><p>The <a href="https://github.com/echaozh/python-dbtxn">python-dbtxn</a> is a library I wrote to ease db accessing from Python programs. Directly calling Python DBI leaves a lot of boilerplate code all over the place, and boilerplate code is bad. I googled, and there are no dbtxn like libraries, so I wrote my own.</p>
+<!-- more -->
+
+<p>There are 2 sources of boilerplate code:</p>
+<ol>
+<li>cursor.execute() and cursor.fetchall()/cursor.rowcount/cursor.lastrowid have to be separately called to execute a SQL and then acquire the results/information of the execution;</li>
+<li>connection/cursor objects have to be acquired first, and then closed. The transaction has to be committed or aborted each time.</li>
+</ol>
+<p>The first problem can be easily fixed by wrapping your own function around the execute() and fetchall() calls. At the lowest level, the DBI doesn&#39;t want to incur the cost of info fetching on those callers who don&#39;t care about the info. This is easily understandable by one from the C++ background (ie, me). However, it&#39;s unwieldy, and at a higher level, I can make my own decision to pay the price each time I execute a SQL statement.</p>
+<p>The second source of boilerplate code comes from the execution model of the Python DBI. The DBI is an API to be called, rather than a framework to make the calls. When there is no transaction to commit, the passive API/library model works fine and unobtrusive. However, so long as transactions are involved, boilerplate code emerges as all transactions are alike. The dbtxn library manages the transaction, setting up the necessary exception-safe resource releasing mechanism.</p>
+<p>The dbtxn library does more than simply managing transactions. Actually, it separates the business logic which doesn&#39;t care about the underlying database from the callers who know and play with the dirty details. The business logic only needs to know about the SQLs and the processing of the result set, but not the connection, cursor or transaction involved. And business logic should be composable into bigger transactions, without having to pass cursors around. This is all possible with dbtxn.</p>
+<p>Generators instead of plain functions are chosen as the interface of the library. This is straightforward, as the callee of the dbtxn() function <em>generates</em> SQLs to be executed by dbtxn(), which forms an obvious producer/consumer relationship. You can yield multiple SQLs from the same generator without returning to dbtxn(), and without dbtxn() passing in anything when calling the logic, polluting its interface. dbtxn() also handles nested generators, making the SQL generators composable. SQLs in the same transaction can be grouped into multiple generators, making the code more maintainable.</p>
+<p>Using generators makes mocking the database for the business logic a breeze. You don&#39;t need a database or mocking the DBI. You don&#39;t even need the dbtxn library. To test the logic, you just need to call it and send() in data as the result set. Also, the send() calls and the _yield_s can be easily paired, without any bookkeeping.</p>
+<p>Also, <code>@in_txn</code> decorator is provided to remove the cluttering calls of dbtxn(). Decorated by it, the generators can be called as if they&#39;re ordinary functions. <code>@for_recurse</code> is provided to make nested generator look like ordinary functions.</p>
+<p>In retrospect, dbtxn() looks a lot like a monad, namely, the STM monad. The goal to encapsulate computation is close, but the implementation is not. I will work to make it more monadic.</p>
+</div></article><div id="attoolbox" style="display: inline" class="addthis_toolbox addthis_default_style addthis_16x16_style"><a class="addthis_button_email"></a><a class="addthis_button_print"></a><a class="addthis_button_reddit"></a><a class="addthis_button_hackernews"></a><a class="addthis_button_google_plusone_share"></a><a class="addthis_button_linkedin"></a><a class="addthis_button_sinaweibo"></a><a class="addthis_button_facebook"></a><a class="addthis_button_twitter"></a><a class="addthis_button_expanded"></a><a id="atcounter" class="addthis_counter addthis_bubble_style"></a></div><script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=echaozh"></script><script type="text/javascript">addthis.toolbox("#attoolbox");
+addthis.counter("#atcounter");
+</script><p></p><div id="disqus_thread"></div><script type="text/javascript">/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+ // required: replace example with your forum shortname
+var disqus_shortname = 'echaozh';
+
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] ||
+   document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script><noscript>Please enable JavaScript to view the&nbsp;<a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by&nbsp;<span class="logo-disqusDisqus"></span></a></div><div class="footer"><address class="contact"><p><a href="/about.html">Zhang Yichao</a><br><a href="https://github.com/echaozh">On GitHub</a><br><a href="http://weibo.com/echaozh">On Weibo</a><br><span id="email">By Email: echaozh (at) gmail dot com
+(Please turn on JavaScript.)</span><br><a href="https://www.gittip.com/echaozh/">Tip Me</a><br><a href="/feed.xml">Subscribe to Posts</a><br><a href="https://github.com/echaozh/harp-blog/">Blog Source</a></p></address></div></div><script>document.getElementById('email').innerHTML =
+  ('<n uers="znvygb:rpunbmu@tznvy.pbz" ery="absbyybj" pynff="rznvy">' +
+   'Ol Rznvy</n>').replace (
+    /[a-zA-Z]/g, function (c) {
+      return String.fromCharCode ((c <= "Z" ? 90 : 122) >=
+                                  (c = c.charCodeAt (0) + 13) ? c
+                                  : c - 26);
+    });</script></body>

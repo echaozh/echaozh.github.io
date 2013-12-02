@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?><feed xmlns="http://www.w3.org/2005/Atom"><title>A Path Less Travelled</title><link href="http://example.com/"></link><link type="application/atom+xml" rel="self" href="http://echaozh.com/feed.xml"></link><updated>2013-12-02T02:10:18.151Z</updated><id>http://echaozh.com/feed.xml</id><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><entry><id>http://echaozh.com/posts/teasers-and-tags.html</id><link type="text/html" rel="alternate" href="http://echaozh.com/posts/teasers-and-tags.html"></link><title>Adding Teasers and Tags for Posts with Harp</title><published>2013-10-10</published><updated>2013-10-10</updated><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><content type="html">&lt;p&gt;Starting a blog using &lt;a href=&quot;http://harpjs.com&quot;&gt;Harp&lt;/a&gt; is
+&lt;a href=&quot;http://harpjs.com/docs/quick-start&quot;&gt;very easy&lt;/a&gt;. Here&#39;s how to add teasers to the
+front page, and how to make tag pages.&lt;/p&gt;
+&lt;!-- more --&gt;
+
+&lt;h3&gt;Adding Teasers&lt;/h3&gt;
+&lt;p&gt;Let&#39;s add support for WordPress style teasers: teaser and the rest of the content
+separated by a &lt;code&gt;&lt;!-- more --&gt;&lt;/code&gt; comment.&lt;/p&gt;
+&lt;p&gt;Well, first you add the comment to your posts, like this:&lt;/p&gt;
+&lt;p&gt;&lt;script src=&quot;https://gist.github.com/echaozh/6916985.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;noscript&gt;
+  &lt;a href=&quot;https://gist.github.com/echaozh/6916985#file-post-example&quot;
+     target=&quot;_blank&quot;&gt;
+    Open the Gist
+  &lt;/a&gt;
+&lt;/noscript&gt;
+
+&lt;p&gt;Then, in &lt;code&gt;index.jade&lt;/code&gt;, you can render the post and strip away the comment and
+everything after it. Then you got your teaser. This is possible because partials
+in the Harp flavored &lt;a href=&quot;jade-lang.com&quot;&gt;Jade&lt;/a&gt; is implemented by passing in a
+&lt;code&gt;partial()&lt;/code&gt; function which is callable by JavaScript code in the Jade template!
+Calling &lt;code&gt;partial(postFilePath)&lt;/code&gt; actually returns the rendered post as a
+JavaScript string. Then it&#39;s easy to call &lt;code&gt;String.prototype.replace()&lt;/code&gt; to strip
+away everything you don&#39;t need.&lt;/p&gt;
+&lt;p&gt;The JavaScript code is really simple (assuming you put your posts under
+public/posts):&lt;/p&gt;
+&lt;p&gt;&lt;script src=&quot;https://gist.github.com/echaozh/6917018.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;noscript&gt;
+  &lt;a href=&quot;https://gist.github.com/echaozh/6917018#file-teaser-extraction-js&quot;
+     target=&quot;_blank&quot;&gt;
+    Open the Gist
+  &lt;/a&gt;
+&lt;/noscript&gt;
+
+&lt;p&gt;Prefix each line with &lt;code&gt;-&lt;/code&gt; to make it unbuffered code in Jade.&lt;/p&gt;
+&lt;p&gt;The teaser will look like this:&lt;/p&gt;
+&lt;p&gt;&lt;script src=&quot;https://gist.github.com/echaozh/6917031.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;noscript&gt;
+  &lt;a href=&quot;https://gist.github.com/echaozh/6917031#file-teaser-html&quot;
+     target=&quot;_blank&quot;&gt;
+    Open the Gist
+  &lt;/a&gt;
+&lt;/noscript&gt;
+
+&lt;p&gt;Put it in the front page.&lt;/p&gt;
+&lt;h3&gt;Making Tag Pages&lt;/h3&gt;
+&lt;p&gt;Or, more precisely, making a tag page to dynamically list posts for different
+tags. Harp, AFAIK, doesn&#39;t allow you to create pages without a template. And it&#39;s
+for developing WebApps. So the solution is obvious: you need client side
+JavaScript to make it possible (unless you create a page template for each tag
+by hand).&lt;/p&gt;
+&lt;p&gt;My solution is to populate the tag page with all tags, and hide those tags you
+don&#39;t want. The wanted tag name is passed in via the hash part in the URL.&lt;/p&gt;
+&lt;p&gt;Tags, as I mentioned in the &lt;a href=&quot;/posts/to-harp.html&quot;&gt;Migrated Blog to Harp&lt;/a&gt; post,
+should be specified in the &lt;code&gt;_data.json&lt;/code&gt; file. Extracting tags from the file is
+really straightforward.&lt;/p&gt;
+&lt;p&gt;Source of my tag template:&lt;/p&gt;
+&lt;p&gt;&lt;script src=&quot;https://gist.github.com/echaozh/6917115.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;noscript&gt;
+  &lt;a href=&quot;https://gist.github.com/echaozh/6917115#file-tag-page-jade&quot;
+     target=&quot;_blank&quot;&gt;
+    Open the Gist
+  &lt;/a&gt;
+&lt;/noscript&gt;
+
+&lt;h3&gt;Jade Snippet to Find Page Data&lt;/h3&gt;
+&lt;p&gt;Harp only sends in a &lt;code&gt;current&lt;/code&gt; object with path info of the template. To find
+data registered for the specific template, use the JavaScript snippet below (and
+don&#39;t forget to prefix the lines):&lt;/p&gt;
+&lt;p&gt;&lt;script src=&quot;https://gist.github.com/echaozh/6917128.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;noscript&gt;
+  &lt;a href=&quot;https://gist.github.com/echaozh/6917128#file-page-data-js&quot;
+     target=&quot;_blank&quot;&gt;
+    Open the Gist
+  &lt;/a&gt;
+&lt;/noscript&gt;
+
+&lt;p&gt;I put it in &lt;code&gt;_page.jade&lt;/code&gt; and include it in almost every Jade template.&lt;/p&gt;
+</content></entry><entry><id>http://echaozh.com/posts/to-harp.html</id><link type="text/html" rel="alternate" href="http://echaozh.com/posts/to-harp.html"></link><title>Migrated Blog to Harp</title><published>2013-10-08</published><updated>2013-10-08</updated><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><content type="html">&lt;p&gt;I have migrated my blog to &lt;a href=&quot;http://harpjs.com&quot;&gt;Harp&lt;/a&gt;! Now I&#39;ve waved goodbye to
+&lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt; and &lt;a href=&quot;http://jaspervdj.be/blaze/&quot;&gt;Blaze HTML&lt;/a&gt;,
+and am using &lt;a href=&quot;http://jade-lang.com&quot;&gt;Jade&lt;/a&gt; instead. I am pretty happy with the
+migration.&lt;/p&gt;
+&lt;!-- more --&gt;
+
+&lt;p&gt;Though I am not using Harp as a server, I&#39;m happy with its compilation process.
+With native Jade support, I can finally get rid of my Makefiles! Jade also
+supports embedded JavaScript logic, so tag pages can be generated directly in the
+Jade template, rather than in a Jekyll plugin, which is definately more
+convenient in my eyes.&lt;/p&gt;
+&lt;p&gt;Also, the meta data is put in a separate &lt;code&gt;_data.json&lt;/code&gt; file
+in each directory, rather than scattering in each page. This is arguably better
+than in-page meta data, as it allows easy tag extraction. And it makes each page
+clean, as the meta data is not always syntactically correct, which sometimes
+makes me, a purist, itch somewhere unscratchable. And it eases meta data
+processing logic in the static site generator. Though, sometimes it is more
+annoying to open up another file to write meta data to, and you tend to forget.&lt;/p&gt;
+&lt;p&gt;On the whole, I am pretty happy with the transition. Oh, I had to patch the
+Terraform library depended by Harp to make nested layout templates possible. I
+will send the patch upstream some time later. Can&#39;t believe they left such useful
+functionality out.&lt;/p&gt;
+</content></entry><entry><id>http://echaozh.com/posts/luapp.html</id><link type="text/html" rel="alternate" href="http://echaozh.com/posts/luapp.html"></link><title>LuaPP, a Wrapper for Lua in C++</title><published>2013-10-07</published><updated>2013-10-07</updated><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><content type="html">&lt;p&gt;&lt;a href=&quot;https://github.com/echaozh/luapp&quot;&gt;LuaPP&lt;/a&gt; is a library I wrote to ease the embedding of Lua scripts into C++ applications. It&#39;s more C++-ish, and much easier to use.&lt;/p&gt;
+&lt;!-- more --&gt;
+
+&lt;p&gt;The library makes Lua tables, functions, and other primitive types directly accessible from the C++ code. Instead of manipulating the stack, you can directly get and set values to a global variable, or access fields of a table, or invoke a function as if it was native. You can pass in arguments of the std::string type, and it will be converted. You can even pass in Lua tables as arguments. Variadic arguments are used in the function interface to make invocations look and feel more native.&lt;/p&gt;
+&lt;p&gt;When you embed Lua into your application, you normally want to load external Lua scripts, execute them, and interact with them (say invoke functions defined in the scripts). LuaPP helps you interact with the scripts easily.&lt;/p&gt;
+&lt;p&gt;I wrote another library &lt;em&gt;taveren&lt;/em&gt; using LuaPP to embed Lua scripts into strings. It makes expansions in string literals like in Bash or Ruby possible.&lt;/p&gt;
+</content></entry><entry><id>http://echaozh.com/posts/python-dbtxn.html</id><link type="text/html" rel="alternate" href="http://echaozh.com/posts/python-dbtxn.html"></link><title>Introducing Python dbtxn Library</title><published>2013-10-06</published><updated>2013-10-06</updated><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><content type="html">&lt;p&gt;The &lt;a href=&quot;https://github.com/echaozh/python-dbtxn&quot;&gt;python-dbtxn&lt;/a&gt; is a library I wrote to ease db accessing from Python programs. Directly calling Python DBI leaves a lot of boilerplate code all over the place, and boilerplate code is bad. I googled, and there are no dbtxn like libraries, so I wrote my own.&lt;/p&gt;
+&lt;!-- more --&gt;
+
+&lt;p&gt;There are 2 sources of boilerplate code:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;cursor.execute() and cursor.fetchall()/cursor.rowcount/cursor.lastrowid have to be separately called to execute a SQL and then acquire the results/information of the execution;&lt;/li&gt;
+&lt;li&gt;connection/cursor objects have to be acquired first, and then closed. The transaction has to be committed or aborted each time.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The first problem can be easily fixed by wrapping your own function around the execute() and fetchall() calls. At the lowest level, the DBI doesn&#39;t want to incur the cost of info fetching on those callers who don&#39;t care about the info. This is easily understandable by one from the C++ background (ie, me). However, it&#39;s unwieldy, and at a higher level, I can make my own decision to pay the price each time I execute a SQL statement.&lt;/p&gt;
+&lt;p&gt;The second source of boilerplate code comes from the execution model of the Python DBI. The DBI is an API to be called, rather than a framework to make the calls. When there is no transaction to commit, the passive API/library model works fine and unobtrusive. However, so long as transactions are involved, boilerplate code emerges as all transactions are alike. The dbtxn library manages the transaction, setting up the necessary exception-safe resource releasing mechanism.&lt;/p&gt;
+&lt;p&gt;The dbtxn library does more than simply managing transactions. Actually, it separates the business logic which doesn&#39;t care about the underlying database from the callers who know and play with the dirty details. The business logic only needs to know about the SQLs and the processing of the result set, but not the connection, cursor or transaction involved. And business logic should be composable into bigger transactions, without having to pass cursors around. This is all possible with dbtxn.&lt;/p&gt;
+&lt;p&gt;Generators instead of plain functions are chosen as the interface of the library. This is straightforward, as the callee of the dbtxn() function &lt;em&gt;generates&lt;/em&gt; SQLs to be executed by dbtxn(), which forms an obvious producer/consumer relationship. You can yield multiple SQLs from the same generator without returning to dbtxn(), and without dbtxn() passing in anything when calling the logic, polluting its interface. dbtxn() also handles nested generators, making the SQL generators composable. SQLs in the same transaction can be grouped into multiple generators, making the code more maintainable.&lt;/p&gt;
+&lt;p&gt;Using generators makes mocking the database for the business logic a breeze. You don&#39;t need a database or mocking the DBI. You don&#39;t even need the dbtxn library. To test the logic, you just need to call it and send() in data as the result set. Also, the send() calls and the _yield_s can be easily paired, without any bookkeeping.&lt;/p&gt;
+&lt;p&gt;Also, &lt;code&gt;@in_txn&lt;/code&gt; decorator is provided to remove the cluttering calls of dbtxn(). Decorated by it, the generators can be called as if they&#39;re ordinary functions. &lt;code&gt;@for_recurse&lt;/code&gt; is provided to make nested generator look like ordinary functions.&lt;/p&gt;
+&lt;p&gt;In retrospect, dbtxn() looks a lot like a monad, namely, the STM monad. The goal to encapsulate computation is close, but the implementation is not. I will work to make it more monadic.&lt;/p&gt;
+</content></entry><entry><id>http://echaozh.com/posts/first-post.html</id><link type="text/html" rel="alternate" href="http://echaozh.com/posts/first-post.html"></link><title>My First Blog Post Here</title><published>2013-09-28</published><updated>2013-09-28</updated><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><content type="html">&lt;p&gt;This is my very first blog post on this &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt; powered
+static blog site.&lt;/p&gt;
+&lt;p&gt;Posts are generated from Markdown drafts. Layouts and other HTML files are
+generated using &lt;a href=&quot;http://jaspervdj.be/blaze/&quot;&gt;Blaze HTML&lt;/a&gt;. Raw HTML feels ugly,
+especially with unbreakable long strings as attribute values. Generating HTMLs
+with DSLs solves this problem effectively. I am considering switching to
+some Ruby DSL later.&lt;/p&gt;
+</content></entry></feed>

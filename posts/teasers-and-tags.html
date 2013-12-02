@@ -1,0 +1,102 @@
+<!DOCTYPE html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content IE=edge><meta name="viewport" content="width=device-width"><title>Adding Teasers and Tags for Posts with Harp</title><!--  syntax highlighting CSS--><link rel="stylesheet" href="/css/syntax.css"><!--  Custom CSS--><link rel="stylesheet" href="/css/main.css"></head><body><div class="site"><div class="header"><h1 class="title"><a href="/">A Path Less Travelled</a></h1><a href="/" class="extra">home</a><a href="/posts.html" class="extra">posts</a><a href="/about.html" class="extra">about</a><a href="/family.html" class="extra">family</a><a href="/resumes.html" class="extra">resumes</a></div><div class="content"><article><small class="wholeDate"><span class="date">10</span><br/>Oct 2013</small><h2>Adding Teasers and Tags for Posts with Harp</h2><div class="postTags">Tags:&nbsp;<span class="postTag">meta</span>&nbsp;<span class="postTag">harp</span>&nbsp;<span class="postTag">javascript</span>&nbsp;<span class="postTag">jade</span></div><div class="post"><p>Starting a blog using <a href="http://harpjs.com">Harp</a> is
+<a href="http://harpjs.com/docs/quick-start">very easy</a>. Here&#39;s how to add teasers to the
+front page, and how to make tag pages.</p>
+<!-- more -->
+
+<h3>Adding Teasers</h3>
+<p>Let&#39;s add support for WordPress style teasers: teaser and the rest of the content
+separated by a <code>&lt;!-- more --&gt;</code> comment.</p>
+<p>Well, first you add the comment to your posts, like this:</p>
+<p><script src="https://gist.github.com/echaozh/6916985.js"></script></p>
+<noscript>
+  <a href="https://gist.github.com/echaozh/6916985#file-post-example"
+     target="_blank">
+    Open the Gist
+  </a>
+</noscript>
+
+<p>Then, in <code>index.jade</code>, you can render the post and strip away the comment and
+everything after it. Then you got your teaser. This is possible because partials
+in the Harp flavored <a href="jade-lang.com">Jade</a> is implemented by passing in a
+<code>partial()</code> function which is callable by JavaScript code in the Jade template!
+Calling <code>partial(postFilePath)</code> actually returns the rendered post as a
+JavaScript string. Then it&#39;s easy to call <code>String.prototype.replace()</code> to strip
+away everything you don&#39;t need.</p>
+<p>The JavaScript code is really simple (assuming you put your posts under
+public/posts):</p>
+<p><script src="https://gist.github.com/echaozh/6917018.js"></script></p>
+<noscript>
+  <a href="https://gist.github.com/echaozh/6917018#file-teaser-extraction-js"
+     target="_blank">
+    Open the Gist
+  </a>
+</noscript>
+
+<p>Prefix each line with <code>-</code> to make it unbuffered code in Jade.</p>
+<p>The teaser will look like this:</p>
+<p><script src="https://gist.github.com/echaozh/6917031.js"></script></p>
+<noscript>
+  <a href="https://gist.github.com/echaozh/6917031#file-teaser-html"
+     target="_blank">
+    Open the Gist
+  </a>
+</noscript>
+
+<p>Put it in the front page.</p>
+<h3>Making Tag Pages</h3>
+<p>Or, more precisely, making a tag page to dynamically list posts for different
+tags. Harp, AFAIK, doesn&#39;t allow you to create pages without a template. And it&#39;s
+for developing WebApps. So the solution is obvious: you need client side
+JavaScript to make it possible (unless you create a page template for each tag
+by hand).</p>
+<p>My solution is to populate the tag page with all tags, and hide those tags you
+don&#39;t want. The wanted tag name is passed in via the hash part in the URL.</p>
+<p>Tags, as I mentioned in the <a href="/posts/to-harp.html">Migrated Blog to Harp</a> post,
+should be specified in the <code>_data.json</code> file. Extracting tags from the file is
+really straightforward.</p>
+<p>Source of my tag template:</p>
+<p><script src="https://gist.github.com/echaozh/6917115.js"></script></p>
+<noscript>
+  <a href="https://gist.github.com/echaozh/6917115#file-tag-page-jade"
+     target="_blank">
+    Open the Gist
+  </a>
+</noscript>
+
+<h3>Jade Snippet to Find Page Data</h3>
+<p>Harp only sends in a <code>current</code> object with path info of the template. To find
+data registered for the specific template, use the JavaScript snippet below (and
+don&#39;t forget to prefix the lines):</p>
+<p><script src="https://gist.github.com/echaozh/6917128.js"></script></p>
+<noscript>
+  <a href="https://gist.github.com/echaozh/6917128#file-page-data-js"
+     target="_blank">
+    Open the Gist
+  </a>
+</noscript>
+
+<p>I put it in <code>_page.jade</code> and include it in almost every Jade template.</p>
+</div></article><div id="attoolbox" style="display: inline" class="addthis_toolbox addthis_default_style addthis_16x16_style"><a class="addthis_button_email"></a><a class="addthis_button_print"></a><a class="addthis_button_reddit"></a><a class="addthis_button_hackernews"></a><a class="addthis_button_google_plusone_share"></a><a class="addthis_button_linkedin"></a><a class="addthis_button_sinaweibo"></a><a class="addthis_button_facebook"></a><a class="addthis_button_twitter"></a><a class="addthis_button_expanded"></a><a id="atcounter" class="addthis_counter addthis_bubble_style"></a></div><script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=echaozh"></script><script type="text/javascript">addthis.toolbox("#attoolbox");
+addthis.counter("#atcounter");
+</script><p></p><div id="disqus_thread"></div><script type="text/javascript">/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+ // required: replace example with your forum shortname
+var disqus_shortname = 'echaozh';
+
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] ||
+   document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script><noscript>Please enable JavaScript to view the&nbsp;<a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by&nbsp;<span class="logo-disqusDisqus"></span></a></div><div class="footer"><address class="contact"><p><a href="/about.html">Zhang Yichao</a><br><a href="https://github.com/echaozh">On GitHub</a><br><a href="http://weibo.com/echaozh">On Weibo</a><br><span id="email">By Email: echaozh (at) gmail dot com
+(Please turn on JavaScript.)</span><br><a href="https://www.gittip.com/echaozh/">Tip Me</a><br><a href="/feed.xml">Subscribe to Posts</a><br><a href="https://github.com/echaozh/harp-blog/">Blog Source</a></p></address></div></div><script>document.getElementById('email').innerHTML =
+  ('<n uers="znvygb:rpunbmu@tznvy.pbz" ery="absbyybj" pynff="rznvy">' +
+   'Ol Rznvy</n>').replace (
+    /[a-zA-Z]/g, function (c) {
+      return String.fromCharCode ((c <= "Z" ? 90 : 122) >=
+                                  (c = c.charCodeAt (0) + 13) ? c
+                                  : c - 26);
+    });</script></body>
