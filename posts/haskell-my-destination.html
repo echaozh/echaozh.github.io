@@ -1,4 +1,4 @@
-<!DOCTYPE html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content IE=edge><meta name="viewport" content="width=device-width"><title>Haskell My Destination</title><!--  syntax highlighting CSS--><link rel="stylesheet" href="/css/syntax.css"><!--  Custom CSS--><link rel="stylesheet" href="/css/main.css"></head><body><div class="site"><div class="header"><h1 class="title"><a href="/">A Path Less Travelled</a></h1><a href="/" class="extra">home</a><a href="/posts.html" class="extra">posts</a><a href="/about.html" class="extra">about</a><a href="/family.html" class="extra">family</a><a href="/resumes.html" class="extra">resumes</a></div><div class="content"><article><small class="wholeDate"><span class="date">04</span><br/>Mar 2014</small><h2>Haskell My Destination</h2><div class="postTags">Tags:&nbsp;<span class="postTag">haskell</span></div><div class="post"><p>Sadly, people around me, even programmers, don&#39;t read much science fiction, so in
+<!DOCTYPE html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content IE=edge><meta name="viewport" content="width=device-width"><title>Haskell My Destination</title><!--  syntax highlighting CSS--><link rel="stylesheet" href="/css/syntax.css"><!--  Custom CSS--><link rel="stylesheet" href="/css/main.css"></head><body><div class="site"><div class="header"><h1 class="title"><a href="/">A Path Less Travelled</a></h1><a href="/" class="extra">home</a><a href="/posts.html" class="extra">posts</a><a href="/about.html" class="extra">about</a><a href="/family.html" class="extra">family</a><a href="/resumes.html" class="extra">resumes</a></div><div class="content"><article><small class="wholeDate"><span class="date">04</span><br/>Mar 2014</small><h2>Haskell My Destination</h2><div class="postTags">Tags:&nbsp;<span class="postTag">haskell</span>&nbsp;<span class="postTag">evangelism</span></div><div class="post"><p>Sadly, people around me, even programmers, don&#39;t read much science fiction, so in
 case you don&#39;t recognize, the title is an allusion to Alfred Bester&#39;s book (find
 it out and read it!).</p>
 <p>Well, I come to realize that Haskell may be my last language. Well, I&#39;d like to
@@ -16,7 +16,12 @@ middle, but can produce so much.</p>
 <p>In Smalltalk and Ruby, everything is an object. In Common Lisp, everything is a
 list. In Haskell, everything is a function. Even a variable is a function with
 no argument. You know, since a function with no argument always does the same
-thing, they&#39;d better be called constants rather than variables.</p>
+thing, they&#39;d better be called constants rather than variables. Even better,
+all functions, except the constants, are not only functions, but also unary
+functions. That is, they take only 1 argument, and return something. Then how do
+Haskellers add 1 to 2? you would ask. Well, (+) is an unary function too! It
+takes 1 and returns... (1+)! It&#39;s another function! and you can apply it to 2,
+giving 3.</p>
 <p>Simple as that. Sure, there must be something else. You have types, but they
 seldom play a significant role in the program logic (not saying that they will
 be out of your way when you&#39;re trying to implement that logic), as they change

@@ -1,0 +1,117 @@
+<!DOCTYPE html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content IE=edge><meta name="viewport" content="width=device-width"><title>Monads as EDSL</title><!--  syntax highlighting CSS--><link rel="stylesheet" href="/css/syntax.css"><!--  Custom CSS--><link rel="stylesheet" href="/css/main.css"></head><body><div class="site"><div class="header"><h1 class="title"><a href="/">A Path Less Travelled</a></h1><a href="/" class="extra">home</a><a href="/posts.html" class="extra">posts</a><a href="/about.html" class="extra">about</a><a href="/family.html" class="extra">family</a><a href="/resumes.html" class="extra">resumes</a></div><div class="content"><article><small class="wholeDate"><span class="date">05</span><br/>Mar 2014</small><h2>Monads as EDSL</h2><div class="postTags">Tags:&nbsp;<span class="postTag">haskell</span>&nbsp;<span class="postTag">monad</span>&nbsp;<span class="postTag">ruby</span>&nbsp;<span class="postTag">edsl</span>&nbsp;<span class="postTag">evangelism</span></div><div class="post"><p>DSLs are mostly standalone scripts or snippets, with a syntax different any other
+general purpose languages (otherwise they&#39;re not in DSL, but just this language).
+It&#39;s easy to tell what is a DSL: not C++, but can be loaded and executed by a
+C++ program; and what&#39;s not: C++.</p>
+<p>However, for EDSLs, the water is not this clear. At one extreme of the spectrum,
+EDSLs in Lisp is undeniably a DSL, but embedded in Lisp. On the other end, Ruby
+EDSLs are just ruby code that needs more explanation to clarify its meaning, and
+looks a little bit cooler than other code.</p>
+<!-- more -->
+
+<p>I&#39;m gonna talk about Ruby-ish &quot;EDSL&quot;s today. To give non-Haskellers a feeling of
+the language, and hopefully may bring some of them to this wonderful language.</p>
+<p>If you know Ruby, especially Ruby on Rails, you must have seen EDSLs, or just
+DSLs as they&#39;re called by Rubyists. Say the query building in ActiveRecord, with
+select, joins, where, group, and other keywords from SQL used in Ruby code as if
+they&#39;re valid Ruby. And they are. Or a more alien looking HTML building DSL,
+without dots to chain all keywords, but organized just like a HTML, or rather,
+a <a href="http://jade-lang.com/">Jade</a> file. Like this:</p>
+<script src="https://gist.github.com/echaozh/9348484.js"></script>
+
+<p>Now, doing the same in Haskell is the most widespread way to build HTMLs.
+<a href="http://jaspervdj.be/blaze/">Blaze HTML</a>
+<a href="http://packdeps.haskellers.com/reverse/blaze-html">has 91 reverse dependencies on hackage</a>
+(not counting many blog sites which are not on it), while its rivals all have
+fewer than 40 (and half of Hamlet&#39;s reverse dependencies start with Yesod, half
+of heist&#39;s contain snap). To quote its
+<a href="http://hackage.haskell.org/package/blaze-markup-0.6.0.0/docs/Text-Blaze.html">reference</a>:</p>
+<script src="https://gist.github.com/echaozh/9348690.js"></script>
+
+<p>Neat, isn&#39;t it? And it&#39;s better than Ruby EDSLs, as it&#39;s simpler than the safe
+ones, and safer than the clean ones. For the Ruby snippet I show you previously,
+it uses <code>instance_eval</code> to make <code>ul</code> &amp; <code>li</code> callable from inside the block of
+code. <code>instance_eval</code> is considered eval, well, evil, sorry about the typo. It
+changes the context of the executing block (and then you&#39;re afraid, Ruby users?
+JavaScript will scare you to death by letting you guess what <code>this</code> is inside a
+function call), whatever it means. For cleaner versions, like in the
+<code>FormHelper</code> from RoR, a <code>f.</code> prefixes every EDSL verb, and making it less
+cryptic, and more Ruby like.</p>
+<p>The Haskell version is possible thanks to something called
+&quot;<a href="http://en.wikipedia.org/wiki/Monad_(functional_programming">Monads</a>)&quot;. And
+thanks to Haskell&#39;s
+<a href="http://www.haskell.org/haskellwiki/Monad#Special_notation">do notation</a> to
+avoid strange arrow like symbols (<code>&gt;&gt;=</code>). Reading the latter link, you can find
+out how Haskellers think of monads: as a <em>composable</em> computation descriptions.
+Well, I always find this line vague, so let&#39;s just say it&#39;s an evaluation
+context, like the <code>this</code> or <code>self</code> in various mainstream languages, in a very
+stretched sense. Say in the example below:</p>
+<script src="https://gist.github.com/echaozh/9349531.js"></script>
+
+<p>You can save it in <code>stack.hs</code>, and run it with <code>runghc stack.hs</code>. It prints
+<code>[2,1]</code>, as you have seen, with 1, 2, and 3 pushed one after another, and the
+last number popped. The <code>testStack</code> has a type of <code>Stack Int ()</code>, which is its
+return type, making it a constant with no arguments. Wait, it&#39;s a constant? but
+it&#39;s all actions inside, ow can it be a constant? Say I am writing in Ruby or
+C++, can I have a constant with 3 push statements and 1 pop? I can&#39;t even have
+a variable with such a value, which is not even a value. <code>testStack</code> doesn&#39;t
+make a stack and return it, as you can see from the code, it returns a string
+saying it&#39;s not a stack builder!</p>
+<p>Well, keep reading the HaskellWiki, you will find:</p>
+<blockquote>
+<p>The essence of monad is thus separation of composition timeline from the
+composed computation&#39;s execution timeline, as well as the ability of
+computation to implicitly carry extra data, as pertaining to the computation
+itself, in addition to its one (hence the name) output, that it will produce
+when run (or queried, or called upon).</p>
+</blockquote>
+<p>In mortal language, it basically means 2 things:</p>
+<ol>
+<li>calling <code>testStack</code> doesn&#39;t run it immediately. Given a stack, it can manipulate it and return a human readable explanation, but it doesn&#39;t produce a stack by itself. It&#39;s like a <a href="http://en.wikipedia.org/wiki/Futures_and_promises">promise (as in concurrent programming)</a> of stack operations, but pending and not resolved;</li>
+<li>when you actually goes on to resolve the pending promise, with a real stack, by calling <code>execState</code>, the operations will happen, and the string will be returned. And the stack magically makes its appearance in the <code>Stack</code> monad to <code>testStack</code>.</li>
+</ol>
+<p>Now, if you look at <code>State</code>&#39;s definition, it&#39;s
+<code>newtype State s a = {runState :: s -&gt; (a, s)}</code>, meaning it&#39;s a &quot;structure&quot;
+with 1 field called <code>runState</code>, which is a function type, taking a <code>s</code> (or
+<code>[Int]</code> in our example), and returns <code>(a, s)</code>, which is a tuple
+(<code>(String, [Int])</code> in <code>testStack</code>&#39;s case). This function is the &quot;computation
+description&quot; mentioned in HaskellWiki: <code>push</code> pushes something to the stack,
+and <code>pop</code> pops something out. The structure is thus a Monad.</p>
+<p>Though the stack operations are simplistic, they look like Ruby EDSLs, or even
+better. Unlike Ruby, the EDSL can be easily extended, even in other modules, or
+even other projects. You don&#39;t need to inject or monkey patch anything, you just
+define a function returning a <code>Stack</code> monad. Actually, the <code>testStack</code> function,
+despite its name and the useless deed it does, is a valid verb for stack
+operation. You can define <code>pushTwice</code> or <code>popTillEmpty</code> or various other
+interesting operations.</p>
+<p>For serious, useful and understandable monad starters, you can take a look at
+<a href="http://legacy.cs.uu.nl/daan/parsec.html">parsec</a>. <code>Maybe</code> is a monad with no
+EDSL like verbs, but very useful. You can consider it as a safe nullable pointer,
+which will never throw a <code>NullPointerException</code> in your face. <code>Either</code> is also
+interesting, as it makes skipping computation on exception possible without
+<code>goto</code> or stack unwinding. Lists (<code>[]</code>) are monads as well, and
+<a href="http://learnyouahaskell.com/a-fistful-of-monads">list comprehension is just a syntax sugar for monadic operations</a>.
+The day I first ran into this pearl was made awesome by it.</p>
+</div></article><div id="attoolbox" style="display: inline" class="addthis_toolbox addthis_default_style addthis_16x16_style"><a class="addthis_button_email"></a><a class="addthis_button_print"></a><a class="addthis_button_reddit"></a><a class="addthis_button_hackernews"></a><a class="addthis_button_google_plusone_share"></a><a class="addthis_button_linkedin"></a><a class="addthis_button_sinaweibo"></a><a class="addthis_button_facebook"></a><a class="addthis_button_twitter"></a><a class="addthis_button_expanded"></a><a id="atcounter" class="addthis_counter addthis_bubble_style"></a></div><script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=echaozh"></script><script type="text/javascript">addthis.toolbox("#attoolbox");
+addthis.counter("#atcounter");
+</script><p></p><div id="disqus_thread"></div><script type="text/javascript">/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+ // required: replace example with your forum shortname
+var disqus_shortname = 'echaozh';
+
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] ||
+   document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script><noscript>Please enable JavaScript to view the&nbsp;<a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by&nbsp;<span class="logo-disqusDisqus"></span></a></div><div class="footer"><address class="contact"><p><a href="/about.html">Zhang Yichao</a><br><a href="https://github.com/echaozh">On GitHub</a><br><a href="http://weibo.com/echaozh">On Weibo</a><br><span id="email">By Email: echaozh (at) gmail dot com
+(Please turn on JavaScript.)</span><br><a href="https://www.gittip.com/echaozh/">Tip Me</a><br><a href="/feed.xml">Subscribe to Posts</a><br><a href="https://github.com/echaozh/harp-blog/">Blog Source</a></p></address></div></div><script>document.getElementById('email').innerHTML =
+  ('<n uers="znvygb:rpunbmu@tznvy.pbz" ery="absbyybj" pynff="rznvy">' +
+   'Ol Rznvy</n>').replace (
+    /[a-zA-Z]/g, function (c) {
+      return String.fromCharCode ((c <= "Z" ? 90 : 122) >=
+                                  (c = c.charCodeAt (0) + 13) ? c
+                                  : c - 26);
+    });</script></body>

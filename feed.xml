@@ -1,4 +1,97 @@
-<?xml version="1.0" encoding="utf-8" ?><feed xmlns="http://www.w3.org/2005/Atom"><title>A Path Less Travelled</title><link href="http://example.com/"></link><link type="application/atom+xml" rel="self" href="http://echaozh.com/feed.xml"></link><updated>2014-03-04T14:46:49.081Z</updated><id>http://echaozh.com/feed.xml</id><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><entry><id>http://echaozh.com/posts/haskell-my-destination.html</id><link type="text/html" rel="alternate" href="http://echaozh.com/posts/haskell-my-destination.html"></link><title>Haskell My Destination</title><published>2014-03-04</published><updated>2014-03-04</updated><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><content type="html">&lt;p&gt;Sadly, people around me, even programmers, don&#39;t read much science fiction, so in
+<?xml version="1.0" encoding="utf-8" ?><feed xmlns="http://www.w3.org/2005/Atom"><title>A Path Less Travelled</title><link href="http://example.com/"></link><link type="application/atom+xml" rel="self" href="http://echaozh.com/feed.xml"></link><updated>2014-03-04T17:12:12.509Z</updated><id>http://echaozh.com/feed.xml</id><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><entry><id>http://echaozh.com/posts/monad-edsl.html</id><link type="text/html" rel="alternate" href="http://echaozh.com/posts/monad-edsl.html"></link><title>Monads as EDSL</title><published>2014-03-05</published><updated>2014-03-05</updated><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><content type="html">&lt;p&gt;DSLs are mostly standalone scripts or snippets, with a syntax different any other
+general purpose languages (otherwise they&#39;re not in DSL, but just this language).
+It&#39;s easy to tell what is a DSL: not C++, but can be loaded and executed by a
+C++ program; and what&#39;s not: C++.&lt;/p&gt;
+&lt;p&gt;However, for EDSLs, the water is not this clear. At one extreme of the spectrum,
+EDSLs in Lisp is undeniably a DSL, but embedded in Lisp. On the other end, Ruby
+EDSLs are just ruby code that needs more explanation to clarify its meaning, and
+looks a little bit cooler than other code.&lt;/p&gt;
+&lt;!-- more --&gt;
+
+&lt;p&gt;I&#39;m gonna talk about Ruby-ish &quot;EDSL&quot;s today. To give non-Haskellers a feeling of
+the language, and hopefully may bring some of them to this wonderful language.&lt;/p&gt;
+&lt;p&gt;If you know Ruby, especially Ruby on Rails, you must have seen EDSLs, or just
+DSLs as they&#39;re called by Rubyists. Say the query building in ActiveRecord, with
+select, joins, where, group, and other keywords from SQL used in Ruby code as if
+they&#39;re valid Ruby. And they are. Or a more alien looking HTML building DSL,
+without dots to chain all keywords, but organized just like a HTML, or rather,
+a &lt;a href=&quot;http://jade-lang.com/&quot;&gt;Jade&lt;/a&gt; file. Like this:&lt;/p&gt;
+&lt;script src=&quot;https://gist.github.com/echaozh/9348484.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Now, doing the same in Haskell is the most widespread way to build HTMLs.
+&lt;a href=&quot;http://jaspervdj.be/blaze/&quot;&gt;Blaze HTML&lt;/a&gt;
+&lt;a href=&quot;http://packdeps.haskellers.com/reverse/blaze-html&quot;&gt;has 91 reverse dependencies on hackage&lt;/a&gt;
+(not counting many blog sites which are not on it), while its rivals all have
+fewer than 40 (and half of Hamlet&#39;s reverse dependencies start with Yesod, half
+of heist&#39;s contain snap). To quote its
+&lt;a href=&quot;http://hackage.haskell.org/package/blaze-markup-0.6.0.0/docs/Text-Blaze.html&quot;&gt;reference&lt;/a&gt;:&lt;/p&gt;
+&lt;script src=&quot;https://gist.github.com/echaozh/9348690.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Neat, isn&#39;t it? And it&#39;s better than Ruby EDSLs, as it&#39;s simpler than the safe
+ones, and safer than the clean ones. For the Ruby snippet I show you previously,
+it uses &lt;code&gt;instance_eval&lt;/code&gt; to make &lt;code&gt;ul&lt;/code&gt; &amp; &lt;code&gt;li&lt;/code&gt; callable from inside the block of
+code. &lt;code&gt;instance_eval&lt;/code&gt; is considered eval, well, evil, sorry about the typo. It
+changes the context of the executing block (and then you&#39;re afraid, Ruby users?
+JavaScript will scare you to death by letting you guess what &lt;code&gt;this&lt;/code&gt; is inside a
+function call), whatever it means. For cleaner versions, like in the
+&lt;code&gt;FormHelper&lt;/code&gt; from RoR, a &lt;code&gt;f.&lt;/code&gt; prefixes every EDSL verb, and making it less
+cryptic, and more Ruby like.&lt;/p&gt;
+&lt;p&gt;The Haskell version is possible thanks to something called
+&quot;&lt;a href=&quot;http://en.wikipedia.org/wiki/Monad_(functional_programming&quot;&gt;Monads&lt;/a&gt;)&quot;. And
+thanks to Haskell&#39;s
+&lt;a href=&quot;http://www.haskell.org/haskellwiki/Monad#Special_notation&quot;&gt;do notation&lt;/a&gt; to
+avoid strange arrow like symbols (&lt;code&gt;&gt;&gt;=&lt;/code&gt;). Reading the latter link, you can find
+out how Haskellers think of monads: as a &lt;em&gt;composable&lt;/em&gt; computation descriptions.
+Well, I always find this line vague, so let&#39;s just say it&#39;s an evaluation
+context, like the &lt;code&gt;this&lt;/code&gt; or &lt;code&gt;self&lt;/code&gt; in various mainstream languages, in a very
+stretched sense. Say in the example below:&lt;/p&gt;
+&lt;script src=&quot;https://gist.github.com/echaozh/9349531.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;You can save it in &lt;code&gt;stack.hs&lt;/code&gt;, and run it with &lt;code&gt;runghc stack.hs&lt;/code&gt;. It prints
+&lt;code&gt;[2,1]&lt;/code&gt;, as you have seen, with 1, 2, and 3 pushed one after another, and the
+last number popped. The &lt;code&gt;testStack&lt;/code&gt; has a type of &lt;code&gt;Stack Int ()&lt;/code&gt;, which is its
+return type, making it a constant with no arguments. Wait, it&#39;s a constant? but
+it&#39;s all actions inside, ow can it be a constant? Say I am writing in Ruby or
+C++, can I have a constant with 3 push statements and 1 pop? I can&#39;t even have
+a variable with such a value, which is not even a value. &lt;code&gt;testStack&lt;/code&gt; doesn&#39;t
+make a stack and return it, as you can see from the code, it returns a string
+saying it&#39;s not a stack builder!&lt;/p&gt;
+&lt;p&gt;Well, keep reading the HaskellWiki, you will find:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The essence of monad is thus separation of composition timeline from the
+composed computation&#39;s execution timeline, as well as the ability of
+computation to implicitly carry extra data, as pertaining to the computation
+itself, in addition to its one (hence the name) output, that it will produce
+when run (or queried, or called upon).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In mortal language, it basically means 2 things:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;calling &lt;code&gt;testStack&lt;/code&gt; doesn&#39;t run it immediately. Given a stack, it can manipulate it and return a human readable explanation, but it doesn&#39;t produce a stack by itself. It&#39;s like a &lt;a href=&quot;http://en.wikipedia.org/wiki/Futures_and_promises&quot;&gt;promise (as in concurrent programming)&lt;/a&gt; of stack operations, but pending and not resolved;&lt;/li&gt;
+&lt;li&gt;when you actually goes on to resolve the pending promise, with a real stack, by calling &lt;code&gt;execState&lt;/code&gt;, the operations will happen, and the string will be returned. And the stack magically makes its appearance in the &lt;code&gt;Stack&lt;/code&gt; monad to &lt;code&gt;testStack&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Now, if you look at &lt;code&gt;State&lt;/code&gt;&#39;s definition, it&#39;s
+&lt;code&gt;newtype State s a = {runState :: s -&gt; (a, s)}&lt;/code&gt;, meaning it&#39;s a &quot;structure&quot;
+with 1 field called &lt;code&gt;runState&lt;/code&gt;, which is a function type, taking a &lt;code&gt;s&lt;/code&gt; (or
+&lt;code&gt;[Int]&lt;/code&gt; in our example), and returns &lt;code&gt;(a, s)&lt;/code&gt;, which is a tuple
+(&lt;code&gt;(String, [Int])&lt;/code&gt; in &lt;code&gt;testStack&lt;/code&gt;&#39;s case). This function is the &quot;computation
+description&quot; mentioned in HaskellWiki: &lt;code&gt;push&lt;/code&gt; pushes something to the stack,
+and &lt;code&gt;pop&lt;/code&gt; pops something out. The structure is thus a Monad.&lt;/p&gt;
+&lt;p&gt;Though the stack operations are simplistic, they look like Ruby EDSLs, or even
+better. Unlike Ruby, the EDSL can be easily extended, even in other modules, or
+even other projects. You don&#39;t need to inject or monkey patch anything, you just
+define a function returning a &lt;code&gt;Stack&lt;/code&gt; monad. Actually, the &lt;code&gt;testStack&lt;/code&gt; function,
+despite its name and the useless deed it does, is a valid verb for stack
+operation. You can define &lt;code&gt;pushTwice&lt;/code&gt; or &lt;code&gt;popTillEmpty&lt;/code&gt; or various other
+interesting operations.&lt;/p&gt;
+&lt;p&gt;For serious, useful and understandable monad starters, you can take a look at
+&lt;a href=&quot;http://legacy.cs.uu.nl/daan/parsec.html&quot;&gt;parsec&lt;/a&gt;. &lt;code&gt;Maybe&lt;/code&gt; is a monad with no
+EDSL like verbs, but very useful. You can consider it as a safe nullable pointer,
+which will never throw a &lt;code&gt;NullPointerException&lt;/code&gt; in your face. &lt;code&gt;Either&lt;/code&gt; is also
+interesting, as it makes skipping computation on exception possible without
+&lt;code&gt;goto&lt;/code&gt; or stack unwinding. Lists (&lt;code&gt;[]&lt;/code&gt;) are monads as well, and
+&lt;a href=&quot;http://learnyouahaskell.com/a-fistful-of-monads&quot;&gt;list comprehension is just a syntax sugar for monadic operations&lt;/a&gt;.
+The day I first ran into this pearl was made awesome by it.&lt;/p&gt;
+</content></entry><entry><id>http://echaozh.com/posts/haskell-my-destination.html</id><link type="text/html" rel="alternate" href="http://echaozh.com/posts/haskell-my-destination.html"></link><title>Haskell My Destination</title><published>2014-03-04</published><updated>2014-03-04</updated><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><content type="html">&lt;p&gt;Sadly, people around me, even programmers, don&#39;t read much science fiction, so in
 case you don&#39;t recognize, the title is an allusion to Alfred Bester&#39;s book (find
 it out and read it!).&lt;/p&gt;
 &lt;p&gt;Well, I come to realize that Haskell may be my last language. Well, I&#39;d like to
@@ -16,7 +109,12 @@ middle, but can produce so much.&lt;/p&gt;
 &lt;p&gt;In Smalltalk and Ruby, everything is an object. In Common Lisp, everything is a
 list. In Haskell, everything is a function. Even a variable is a function with
 no argument. You know, since a function with no argument always does the same
-thing, they&#39;d better be called constants rather than variables.&lt;/p&gt;
+thing, they&#39;d better be called constants rather than variables. Even better,
+all functions, except the constants, are not only functions, but also unary
+functions. That is, they take only 1 argument, and return something. Then how do
+Haskellers add 1 to 2? you would ask. Well, (+) is an unary function too! It
+takes 1 and returns... (1+)! It&#39;s another function! and you can apply it to 2,
+giving 3.&lt;/p&gt;
 &lt;p&gt;Simple as that. Sure, there must be something else. You have types, but they
 seldom play a significant role in the program logic (not saying that they will
 be out of your way when you&#39;re trying to implement that logic), as they change
