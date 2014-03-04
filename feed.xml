@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?><feed xmlns="http://www.w3.org/2005/Atom"><title>A Path Less Travelled</title><link href="http://example.com/"></link><link type="application/atom+xml" rel="self" href="http://echaozh.com/feed.xml"></link><updated>2014-03-04T14:43:30.927Z</updated><id>http://echaozh.com/feed.xml</id><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><entry><id>http://echaozh.com/posts/haskell-my-destination.html</id><link type="text/html" rel="alternate" href="http://echaozh.com/posts/haskell-my-destination.html"></link><title>Haskell My Destination</title><published>2014-03-04</published><updated>2014-03-04</updated><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><content type="html">&lt;p&gt;Sadly, people around me, even programmers don&#39;t read much science fiction, so in
+<?xml version="1.0" encoding="utf-8" ?><feed xmlns="http://www.w3.org/2005/Atom"><title>A Path Less Travelled</title><link href="http://example.com/"></link><link type="application/atom+xml" rel="self" href="http://echaozh.com/feed.xml"></link><updated>2014-03-04T14:46:49.081Z</updated><id>http://echaozh.com/feed.xml</id><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><entry><id>http://echaozh.com/posts/haskell-my-destination.html</id><link type="text/html" rel="alternate" href="http://echaozh.com/posts/haskell-my-destination.html"></link><title>Haskell My Destination</title><published>2014-03-04</published><updated>2014-03-04</updated><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><content type="html">&lt;p&gt;Sadly, people around me, even programmers, don&#39;t read much science fiction, so in
 case you don&#39;t recognize, the title is an allusion to Alfred Bester&#39;s book (find
 it out and read it!).&lt;/p&gt;
 &lt;p&gt;Well, I come to realize that Haskell may be my last language. Well, I&#39;d like to
@@ -6,6 +6,8 @@ learn Clojure when I&#39;m free and play with it, but I will always come back to
 write things in Haskell if possible. I&#39;ve had such realizations before. Over
 time, Smalltalk, Ruby, Common Lisp, have all been my last language for some time,
 but Haskell is going to stick, I think.&lt;/p&gt;
+&lt;!-- more --&gt;
+
 &lt;p&gt;You may have noticed that I prefer simple languages. Not easy ones, mind you,
 because Common Lisp, and especially Haskell, are both beyond easy, which
 contributes to the fact that they&#39;re rarely used these days. However, they&#39;re
