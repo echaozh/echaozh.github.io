@@ -1,4 +1,56 @@
-<?xml version="1.0" encoding="utf-8" ?><feed xmlns="http://www.w3.org/2005/Atom"><title>A Path Less Travelled</title><link href="http://example.com/"></link><link type="application/atom+xml" rel="self" href="http://echaozh.com/feed.xml"></link><updated>2014-02-26T14:27:00.613Z</updated><id>http://echaozh.com/feed.xml</id><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><entry><id>http://echaozh.com/posts/functional_cpp.html</id><link type="text/html" rel="alternate" href="http://echaozh.com/posts/functional_cpp.html"></link><title>Programming in C++ in a More Functional Way</title><published>2013-12-29</published><updated>2013-12-29</updated><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><content type="html">&lt;p&gt;Recently I&#39;m playing with &lt;a href=&quot;https://github.com/Neverlord/libcppa&quot;&gt;libcppa&lt;/a&gt;, by
+<?xml version="1.0" encoding="utf-8" ?><feed xmlns="http://www.w3.org/2005/Atom"><title>A Path Less Travelled</title><link href="http://example.com/"></link><link type="application/atom+xml" rel="self" href="http://echaozh.com/feed.xml"></link><updated>2014-03-04T14:43:30.927Z</updated><id>http://echaozh.com/feed.xml</id><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><entry><id>http://echaozh.com/posts/haskell-my-destination.html</id><link type="text/html" rel="alternate" href="http://echaozh.com/posts/haskell-my-destination.html"></link><title>Haskell My Destination</title><published>2014-03-04</published><updated>2014-03-04</updated><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><content type="html">&lt;p&gt;Sadly, people around me, even programmers don&#39;t read much science fiction, so in
+case you don&#39;t recognize, the title is an allusion to Alfred Bester&#39;s book (find
+it out and read it!).&lt;/p&gt;
+&lt;p&gt;Well, I come to realize that Haskell may be my last language. Well, I&#39;d like to
+learn Clojure when I&#39;m free and play with it, but I will always come back to
+write things in Haskell if possible. I&#39;ve had such realizations before. Over
+time, Smalltalk, Ruby, Common Lisp, have all been my last language for some time,
+but Haskell is going to stick, I think.&lt;/p&gt;
+&lt;p&gt;You may have noticed that I prefer simple languages. Not easy ones, mind you,
+because Common Lisp, and especially Haskell, are both beyond easy, which
+contributes to the fact that they&#39;re rarely used these days. However, they&#39;re
+all simple, and powerful, like a bomb of antimatter, with a small core in the
+middle, but can produce so much.&lt;/p&gt;
+&lt;p&gt;In Smalltalk and Ruby, everything is an object. In Common Lisp, everything is a
+list. In Haskell, everything is a function. Even a variable is a function with
+no argument. You know, since a function with no argument always does the same
+thing, they&#39;d better be called constants rather than variables.&lt;/p&gt;
+&lt;p&gt;Simple as that. Sure, there must be something else. You have types, but they
+seldom play a significant role in the program logic (not saying that they will
+be out of your way when you&#39;re trying to implement that logic), as they change
+even less. And there&#39;re kinds and even sorts (what a marvelous language English
+is! I can&#39;t to see how these concepts get translated into Chinese). I don&#39;t think
+present day mainstream languages go this far to strain the natural language, and
+there is a reason people stay away from Haskell &amp; other functional languages: to
+stay (mostly) sane.&lt;/p&gt;
+&lt;p&gt;I have stayed away from kinds, let alone sorts, this far, and this fact is
+bothering me even if learning these things may make me crazy. Not being able to
+use or understand Boost MPL has not bothered me at all. That&#39;s not for common
+people. Even masters don&#39;t often use them. I don&#39;t remember hearing MPL mentioned
+anywhere other than inside the Boost libraries. (Sure, I have not seen a lot of
+C++ libraries either. Who knows, other than monolithic, everything included
+frameworks like Qt, Gtk, etc, there&#39;re few C++ libraries to talk about in the
+first place. People tend to write libs in C rather than C++, and then write a
+C++ wrapper, which is not very C++-ish.) But in Haskell, everybody seems to know
+everything about everything. What is endomorphism? Hom sets? Profunctors?
+(Disclaimer: I don&#39;t know what they mean.) Really? And you have to write papers
+with math formulas all over the place to show people how to do something in
+Haskell? Have you ever read &quot;Howto&quot;s in, say Python? or Ruby? or even C++ or
+Lisp? To show mortal people how to do something, you show them the code, and
+explain the logic, and the tricks. To show Haskellers, you show them math,
+strange symbols and formulas above and under long lines. As if it were easily
+understandable for us sipping our coffee after a long hour of breathless typing.
+Sure, I know I&#39;m talking like showing code to us is easier for us, but it&#39;s not.
+You have to think really hard to make types fit together, before you even get to
+the meaning.&lt;/p&gt;
+&lt;p&gt;But damn I&#39;m attracted. Like a moth attracted to fire, I cannot help but want to
+write in Haskell. To challenge it and see how far I can get before burning
+myself. I don&#39;t hope to get to know everything, no, I don&#39;t even want to learn
+much math (category theory, eh? The Chinese translation always eludes me when I
+want to talk about it.) I don&#39;t want to be a scientist. I just want to be a
+pragmatic engineer, taming some part of the dragon&#39;s power, and ride it to the
+stars.&lt;/p&gt;
+</content></entry><entry><id>http://echaozh.com/posts/functional_cpp.html</id><link type="text/html" rel="alternate" href="http://echaozh.com/posts/functional_cpp.html"></link><title>Programming in C++ in a More Functional Way</title><published>2013-12-29</published><updated>2013-12-29</updated><author><name>Zhang Yichao</name><email>echaozh#gmail.com</email></author><content type="html">&lt;p&gt;Recently I&#39;m playing with &lt;a href=&quot;https://github.com/Neverlord/libcppa&quot;&gt;libcppa&lt;/a&gt;, by
 implementing the &lt;a href=&quot;https://ramcloud.stanford.edu/wiki/download/attachments/11370504/raft.pdf&quot;&gt;Raft consensus protocol&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;When I am writing tests, I become more and more certain that classes is not the
 right pieces to make up a program. A class, or its encapsulation by using private
